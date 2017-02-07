@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Login Page</title>
+</head>
+<body>
+<h3>Login to Library Application</h3>
+<form name="loginForm" ng-submit="loginFunc()">
+<p>Username : <input name="username" ng-model="user.username" required></input></p>
+<p>Password : <input name="password" type="password" ng-model="user.password" required></input>
+<div>{{msg}}</div>
+<input type="submit" value="Login">
+</form>
+<br>
+<!-- New User?<a href="#signUp">Sign Up</a> -->
+</div>
+</body>
+</html>

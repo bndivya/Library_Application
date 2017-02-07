@@ -1,0 +1,14 @@
+[{
+  "serialno" : "1",
+  "title" : "abc",
+  "author" : "abc",
+  "edition" : "abc",
+  "publisher" : "abc"
+},
+{
+  "serialno" : "2",
+  "title" : "def",
+  "author" : "def",
+  "edition" : "def",
+  "publisher" : "def"
+}]

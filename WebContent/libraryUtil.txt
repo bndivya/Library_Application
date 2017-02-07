@@ -1,0 +1,103 @@
+var app = angular.module('libApp',['ngRoute']);
+app.controller('LoginController', function($scope,$http,$window,$location) {
+	$scope.loginFunc = function(){
+//	$http.get("rest/libraryService/getMsg")
+//    .then(function(response) {
+//        $scope.msg = response.data;
+//    });
+		$http({
+	        method : "POST",
+	        url : "rest/libraryService/validateLogin",
+	        //data : $scope.user,
+	        data : angular.toJson($scope.user),
+	        
+//	        headers: {
+//	        	   "Content-Type" : "application/json",
+//	        	   "Accept": "application/json"
+//	        	 }
+//	        	 
+			contentType: "application/json",
+			dataType: "json",
+			accept: application/json
+	    }).then(function mySucces(response) {
+	        $scope.msg = response.data;
+	        $location.path("/library");
+//	        $window.location.href = '/library.html';
+	    }, function myError(response) {
+	        $scope.msg = response.statusText;
+	    });
+	}
+});
+
+app.controller('SignUpController',function($scope,$http,$window,$location){
+	$scope.signUp = function(){
+	$http({
+        method : "POST",
+        url : "rest/libraryService/signUp",
+        data : $scope.user
+    }).then(function mySucces(response) {
+    	$location.path("/library");
+    }, function myError(response) {
+        $scope.msg = response.statusText;
+    });
+	}
+});
+
+app.controller('LibrarySearchController',function($scope,$http,$window,$location){
+	$scope.searchFunc = function(){
+	$http({
+        method : "POST",
+        url : "library_books.json",
+    }).then(function mySucces(response) {
+    	$scope.books=response.data;
+    }, function myError(response) {
+        $scope.msg = response.statusText;
+    });
+	}
+});
+
+
+
+//Define Routing for app
+app.config(['$routeProvider','$locationProvider',
+  function($routeProvider,$locationProvider) {
+    $routeProvider
+    .when('/login', {
+        templateUrl: 'login.html',
+        controller: 'LoginController'
+    })
+    .when('/signUp', {
+        templateUrl: 'signUp.html',
+        controller: 'SignUpController'
+      })
+      .when('/library', {
+        templateUrl: 'library.html',
+        controller: 'LibrarySearchController'
+      })
+      .otherwise({
+        redirectTo: ''
+      });
+    	
+//    $locationProvider.html5Mode(true); //Remove the '#' from URL.
+}]);
+
+//Home Page Module
+//angular.module('homeApp', []).config(['$routeProvider',
+//function($routeProvider,$locationProvider) {
+//  $routeProvider
+//  .when('/home', {
+//      templateUrl: 'home.html'
+//  })
+//  .when('/profile', {
+//      templateUrl: 'profile.html',
+//      controller: 'ProfileController'
+//  })
+//  .when('/settings', {
+//      templateUrl: 'settings.html',
+//      controller: 'SettingsController'
+//    })
+//    .otherwise({
+//      redirectTo: '/home'
+//    });
+////  $locationProvider.html5Mode(true);
+//}]);

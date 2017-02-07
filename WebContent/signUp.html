@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+ 	
+<form ng-submit="signUp()">
+<p>First Name : <input type="text" ng-model="user.firstname" required></input></p>
+<p>Last Name : <input type="text" ng-model="user.lastname" required></input></p>
+<p>Username : <input type="text" ng-model="user.username" required></input></p>
+<p>Email Id : <input type="text" ng-model="user.emailid" required></input></p>
+<p>Interests : <input type="text" ng-model="user.interests"></input></p>
+<p>Phone Number : <input type="text" ng-model="user.phonenumber" required></input></p>
+<p>Password : <input type="text" ng-model="user.password" required></input></p>
+<p>Confirm Password : <input type="text" ng-model="user.confirmedPassword" required></input></p>
+<input type="submit" value="Sign Up">
+</form>
+</body>
+</html>

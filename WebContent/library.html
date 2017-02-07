@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Library Application</title>
+<!-- <script type="text/javascript" src="angular.min.js" ></script> -->
+ <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+<!--   <script src = "libraryUtil.js"></script> -->
+<!-- </head> -->
+<body>
+<div><a ng-href="#myCart">My Cart({{cart.length}})</a></div>
+<div>
+Filter Criteria
+<form ng-submit="searchFunc()">
+<table>
+<tr>
+<td>Title<input type="text"></td>
+<td>Author<input type="text"></td>
+</tr>
+<tr>
+<td>Subject<input type="text"></td>
+<td>Edition<input type="text"></td>
+</tr>
+<tr><td><input type="submit" name="submit" value="Search"></td></tr>
+</table>
+</form>
+</div>
+
+<!-- <div ng-controller="cartController"> -->
+<div>
+<table>
+<tr><th>Serial number</th>
+<th>Title</th>
+<th>Author</th>
+<th>Edition</th>
+<th>Publisher</th>
+</tr>
+<tr ng-repeat = "book in books">
+<td>{{book.serialno}}</td>
+<td>{{book.title}}</td>
+<td>{{book.author}}</td>
+<td>{{book.edition}}</td>
+<td>{{book.publisher}}</td>
+<!-- <td><a ng-href="addToCart(book)">Add</a></td> -->
+<td><button ng-click="addToCart(book)">Add to cart</button></td>
+</tr>
+</table>
+</div>
+
+</body>
+</html>

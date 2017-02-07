@@ -1,0 +1,32 @@
+[
+   {
+      "serialno" : "1",
+      "title" : "abc",
+      "author" : "abc",
+	  "edition" : "abc",
+	  "publisher" : "abc"
+   },
+	
+  {
+      "serialno" : "2",
+      "title" : "abc",
+      "author" : "abc",
+	  "edition" : "abc",
+	  "publisher" : "abc"
+   },
+ {
+      "serialno" : "3",
+      "title" : "abc",
+      "author" : "abc",
+	  "edition" : "abc",
+	  "publisher" : "abc"
+   },
+	
+{
+      "serialno" : "4",
+      "title" : "abc",
+      "author" : "abc",
+	  "edition" : "abc",
+	  "publisher" : "abc"
+   }
+]
