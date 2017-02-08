@@ -11,7 +11,7 @@ public class LoginUserModel {
 	String   lastname ;
 	String   phonenumber ;
 	String interests;
-	String id;
+	long id;
 	public String getConfirmedPassword() {
 		return confirmedPassword;
 	}
@@ -66,11 +66,11 @@ public class LoginUserModel {
 	public void setInterests(String interests) {
 		this.interests = interests;
 	}
-	public String getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setId(long l) {
+		this.id = l;
 	}
 	
 	

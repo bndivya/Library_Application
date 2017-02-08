@@ -66,10 +66,11 @@ public class LibraryDAO {
 	public boolean signUp(LoginUserModel UserModel) throws SQLException, ClassNotFoundException, JSONException
 	{	
 		boolean bool=false;
+		String sql = "Insert into LOGIN_USER_DETAILS (username, emailid, password, isactive, firstname, lastname, phonenumber, interests) VALUES (?,?,?,?,?,?,?,?)";
 		try{
-			  ps = conn.prepareStatement("Insert into LOGIN_USER_DETAILS VALUES (?,?,?,?,?,?,?,?,?)");
-			  ps.setInt(1, 6);
-			  ps.setString(2, UserModel.getUsername());
+			  ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			  //ps.setInt(1, 7);
+			  /*ps.setString(2, UserModel.getUsername());
 			  ps.setString(3, UserModel.getEmailid());
 			  ps.setString(4, UserModel.getPassword());
 			  ps.setString(5, "Y");
@@ -77,8 +78,35 @@ public class LibraryDAO {
 			  ps.setString(7, UserModel.getLastname());
 			  ps.setString(8, UserModel.getPhonenumber());
 			  ps.setString(9, UserModel.getInterests());
+			  */
 			  
+			 /* ps = conn.prepareStatement("Insert into LOGIN_USER_DETAILS VALUES (?,?,?,?,?,?,?,?)");*/
+			  ps.setString(1, UserModel.getUsername());
+			  ps.setString(2, UserModel.getEmailid());
+			  ps.setString(3, UserModel.getPassword());
+			  ps.setString(4, "Y");
+			  ps.setString(5, UserModel.getFirstname());
+			  ps.setString(6, UserModel.getLastname());
+			  ps.setString(7, UserModel.getPhonenumber());
+			  ps.setString(8, UserModel.getInterests());
+			  
+			  
+			  int affectedRows = ps.executeUpdate();
+
+		        if (affectedRows == 0) {
+		            throw new SQLException("Creating user failed, no rows affected.");
+		        }
+		       
+		        try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+		            if (generatedKeys.next()) {
+		            	UserModel.setId(generatedKeys.getLong(1));
+		            }
+		            else {
+		                throw new SQLException("Creating user failed, no ID obtained.");
+		            }
+		        }
 		      rs = ps.executeQuery();
+//			  rs = ps.getGeneratedKeys();
 		      if(rs!=null)
 		    	  bool = true;
 		}
@@ -88,9 +116,9 @@ public class LibraryDAO {
 		}
 		finally
 		{
-			 rs.close();
+			/* rs.close();
 		     ps.close();
-		     conn.close();
+		     conn.close();*/
 		}
 		return bool;
 	}
