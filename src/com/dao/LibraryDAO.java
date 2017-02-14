@@ -63,7 +63,7 @@ public class LibraryDAO {
 		return bool;
 	}
 
-	public boolean signUp(LoginUserModel UserModel) throws SQLException, ClassNotFoundException, JSONException
+	/*public boolean signUp(LoginUserModel UserModel) throws SQLException, ClassNotFoundException, JSONException
 	{	
 		boolean bool=false;
 		String sql = "Insert into LOGIN_USER_DETAILS (username, emailid, password, isactive, firstname, lastname, phonenumber, interests) VALUES (?,?,?,?,?,?,?,?)";
@@ -80,7 +80,7 @@ public class LibraryDAO {
 			  ps.setString(9, UserModel.getInterests());
 			  */
 			  
-			 /* ps = conn.prepareStatement("Insert into LOGIN_USER_DETAILS VALUES (?,?,?,?,?,?,?,?)");*/
+			 /* ps = conn.prepareStatement("Insert into LOGIN_USER_DETAILS VALUES (?,?,?,?,?,?,?,?)");
 			  ps.setString(1, UserModel.getUsername());
 			  ps.setString(2, UserModel.getEmailid());
 			  ps.setString(3, UserModel.getPassword());
@@ -116,13 +116,62 @@ public class LibraryDAO {
 		}
 		finally
 		{
-			/* rs.close();
+			 rs.close();
 		     ps.close();
-		     conn.close();*/
+		     conn.close();
+		}
+		return bool;
+	}*/
+	
+	
+	
+	
+	
+	public boolean signUp(LoginUserModel UserModel) throws SQLException, ClassNotFoundException, JSONException
+	{	
+		boolean bool=false;
+		String sql = "Insert into LOGIN_USER_DETAILS (username, email, password, isactive, firstname, lastname, phonenumber, interests) VALUES (?,?,?,?,?,?,?,?)";
+		//String sql = "Insert into TEST1 (username) VALUES (?)";
+		try{
+			  ps = conn.prepareStatement(sql);
+			  ps.setString(1, UserModel.getUsername());
+			  ps.setString(2, UserModel.getEmail());
+			  ps.setString(3, UserModel.getPassword());
+			  ps.setString(4, "Y");
+			  ps.setString(5, UserModel.getFirstname());
+			  ps.setString(6, UserModel.getLastname());
+			  ps.setString(7, UserModel.getPhonenumber());
+			  ps.setString(8, UserModel.getInterests());
+			  
+		      rs = ps.executeQuery();
+		      if(rs!=null)
+		    	  bool = true;
+		}
+		catch(SQLException se)
+		{
+			se.printStackTrace();
+		}
+		finally
+		{
+			 rs.close();
+		     ps.close();
+		     conn.close();
 		}
 		return bool;
 	}
-	
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  
 	public boolean getMyCart(String UserModel) throws SQLException, ClassNotFoundException, JSONException
 	{	
 		boolean bool=false;

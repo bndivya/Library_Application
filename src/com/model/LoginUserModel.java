@@ -4,7 +4,7 @@ public class LoginUserModel {
 	
 	String confirmedPassword;
 	String   username;
-	String   emailid ;
+	String   email ;
 	String   password;
 	String   isActive;
 	String  firstname ;
@@ -24,11 +24,11 @@ public class LoginUserModel {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getEmailid() {
-		return emailid;
+	public String getEmail() {
+		return email;
 	}
-	public void setEmailid(String emailid) {
-		this.emailid = emailid;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getPassword() {
 		return password;

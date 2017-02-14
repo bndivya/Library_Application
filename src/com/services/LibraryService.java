@@ -53,10 +53,10 @@ public class LibraryService {
 		
 //		System.out.println("in sign up"+UserModel.getFirstname());
 		
-		if(!(UserModel.getPassword().equals(UserModel.getConfirmedPassword())))
+		/*if(!(UserModel.getPassword().equals(UserModel.getConfirmedPassword())))
 		{
 			return Response.status(400).entity("Mismatching Password").build();
-		}
+		}*/
 		LibraryDAO dao = new LibraryDAO();
 //		JSONObject jo = new JSONObject(UserModel);
 		dao.signUp(UserModel);
