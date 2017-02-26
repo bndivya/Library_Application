@@ -33,7 +33,14 @@ app.controller('LoginController', function($scope,$http,$window,$location) {
 });
 
 app.controller('SignUpController',function($scope,$http,$window,$location){
+	$scope.phoneNumber =/^\d{1,45}$/;
 	$scope.signUp = function(){
+	if($scope.user.password!="" && $scope.user.password!=$scope.user.confirmedPassword)
+		{
+			$scope.msg1 = "Confirmed Password is not same as the password entered";
+			alert("Confirmed Password is not same as the password entered");
+		}
+	else{
 	$http({
         method : "POST",
         dataType: 'json',
@@ -53,6 +60,7 @@ app.controller('SignUpController',function($scope,$http,$window,$location){
     }, function myError(response) {
         $scope.msg = response.statusText;
     });
+	}
 	}
 });
 
@@ -83,11 +91,19 @@ app.controller('SearchController',function($scope,$http,$window,$location){
 			$scope.cart.push(angular.extend({quantity: 1}, book));
 		}
 	};
-	
-	$scope.go
 });
 
-
+app.controller('ProfileController',function($scope,$http,$window,$location){
+	$http({
+        method : "POST",
+        url : "library_books.json",
+    }).then(function mySucces(response) {
+    	$scope.books=response.data;
+    }, function myError(response) {
+        $scope.msg = response.statusText;
+    });
+	}
+);
 
 //Define Routing for app
 app.config(['$routeProvider','$locationProvider',
@@ -108,6 +124,10 @@ app.config(['$routeProvider','$locationProvider',
       .when('/myCart', {
     	  templateUrl: 'cart.html',
     	  controller: 'CartController'
+      })
+      .when('/myProfile', {
+    	  templateUrl: 'profile.html',
+    	  controller: 'ProfileController'
       })
       .otherwise({
         redirectTo: ''

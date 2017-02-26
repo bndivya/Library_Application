@@ -41,7 +41,7 @@ public class LibraryDAO {
 		boolean bool=false;
 		try{
 		     	//stmt = conn.createStatement();
-			  ps = conn.prepareStatement("SELECT username, password FROM LOGIN_USER_DETAILS where username = ? and password = ? and isactive = ?");
+			  ps = conn.prepareStatement("SELECT username, password FROM LIBAPP_USER_DETAILS where username = ? and password = ? and isactive = ?");
 			  ps.setString(1, username);
 			  ps.setString(2, password);
 			  ps.setString(3, "Y");
@@ -130,7 +130,7 @@ public class LibraryDAO {
 	public boolean signUp(LoginUserModel UserModel) throws SQLException, ClassNotFoundException, JSONException
 	{	
 		boolean bool=false;
-		String sql = "Insert into LOGIN_USER_DETAILS (username, email, password, isactive, firstname, lastname, phonenumber, interests) VALUES (?,?,?,?,?,?,?,?)";
+		String sql = "Insert into LIBAPP_USER_DETAILS (username, email, password, isactive, firstname, lastname, phonenumber, interests) VALUES (?,?,?,?,?,?,?,?)";
 		//String sql = "Insert into TEST1 (username) VALUES (?)";
 		try{
 			  ps = conn.prepareStatement(sql);
