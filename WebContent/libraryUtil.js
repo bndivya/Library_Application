@@ -56,6 +56,7 @@ app.controller('SignUpController',function($scope,$http,$window,$location){
 //        }
         //data : angular.toJson($scope.user)
     }).then(function mySucces(response) {
+    	$scope.userId = response.data;
     	$location.path("/library");
     }, function myError(response) {
         $scope.msg = response.statusText;

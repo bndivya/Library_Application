@@ -59,8 +59,13 @@ public class LibraryService {
 		}*/
 		LibraryDAO dao = new LibraryDAO();
 //		JSONObject jo = new JSONObject(UserModel);
-		dao.signUp(UserModel);
-		return Response.status(200).entity("Sign Up Success").build();
+		int userId = dao.signUp(UserModel);
+		//return Response.status(200).entity("Sign Up Success").build();
+		
+		return Response.status(200).entity(userId).build();
+		
+		//return Response.status(200).entity(userId).build();
+		
 //		return (HashMap) new HashMap().put("response", "okays");
 	}
 	

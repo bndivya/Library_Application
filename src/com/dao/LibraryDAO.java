@@ -1,11 +1,13 @@
 package com.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +24,7 @@ public class LibraryDAO {
 	Statement stmt = null;   
 	ResultSet rs ;
 	PreparedStatement ps ;
+	CallableStatement cs;
 	
 	public LibraryDAO()
 	{
@@ -123,17 +126,19 @@ public class LibraryDAO {
 		return bool;
 	}*/
 	
-	
-	
-	
-	
-	public boolean signUp(LoginUserModel UserModel) throws SQLException, ClassNotFoundException, JSONException
+
+	public int signUp(LoginUserModel UserModel) throws SQLException, ClassNotFoundException, JSONException
 	{	
-		boolean bool=false;
-		String sql = "Insert into LIBAPP_USER_DETAILS (username, email, password, isactive, firstname, lastname, phonenumber, interests) VALUES (?,?,?,?,?,?,?,?)";
+		boolean bool=false; 
+		int userId = 0; 
+		int id = 0 ;
+		//String sql = "Insert into LIBAPP_USER_DETAILS (username, email, password, isactive, firstname, lastname, phonenumber, interests) VALUES (?,?,?,?,?,?,?,?)";
+		
+		String sql = "BEGIN Insert into LIBAPP_USER_DETAILS (username, email, password, isactive, firstname, lastname, phonenumber, interests) VALUES (?,?,?,?,?,?,?,?) RETURNING id INTO ?; END;";
+		
 		//String sql = "Insert into TEST1 (username) VALUES (?)";
 		try{
-			  ps = conn.prepareStatement(sql);
+			  /*ps = conn.prepareStatement(sql, new String[]{"id"});
 			  ps.setString(1, UserModel.getUsername());
 			  ps.setString(2, UserModel.getEmail());
 			  ps.setString(3, UserModel.getPassword());
@@ -143,9 +148,33 @@ public class LibraryDAO {
 			  ps.setString(7, UserModel.getPhonenumber());
 			  ps.setString(8, UserModel.getInterests());
 			  
-		      rs = ps.executeQuery();
-		      if(rs!=null)
+		      //rs = ps.executeQuery();
+			  ps.executeUpdate();
+			  ResultSet rs = ps.getGeneratedKeys();
+			  
+		      if(rs.next())
+		      {
+		    	  long id = rs.getLong("id");
+		      }*/
+		     /* if(rs!=null){
 		    	  bool = true;
+		    	  //userId = rs.getString("id");
+		      }*/
+			
+			//http://stackoverflow.com/questions/3552260/plsql-jdbc-how-to-get-last-row-id
+			cs = conn.prepareCall(sql);
+			cs.setString(1, UserModel.getUsername());
+			  cs.setString(2, UserModel.getEmail());
+			  cs.setString(3, UserModel.getPassword());
+			  cs.setString(4, "Y");
+			  cs.setString(5, UserModel.getFirstname());
+			  cs.setString(6, UserModel.getLastname());
+			  cs.setString(7, UserModel.getPhonenumber());
+			  cs.setString(8, UserModel.getInterests());
+		    cs.registerOutParameter(9, Types.NUMERIC);
+		    cs.execute();
+		    id = cs.getInt(9);
+		    return id;
 		}
 		catch(SQLException se)
 		{
@@ -153,11 +182,11 @@ public class LibraryDAO {
 		}
 		finally
 		{
-			 rs.close();
+			/* rs.close();
 		     ps.close();
-		     conn.close();
+		     conn.close();*/
 		}
-		return bool;
+		return id;
 	}
 			  
 			  
