@@ -1,6 +1,8 @@
 package com.model;
 
-public class LoginUserModel {
+import java.io.Serializable;
+
+public class LoginUserModel implements Serializable{
 	
 	String confirmedPassword;
 	String   username;

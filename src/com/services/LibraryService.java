@@ -1,10 +1,16 @@
 package com.services;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -50,25 +56,34 @@ public class LibraryService {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response signUp(LoginUserModel UserModel) throws ClassNotFoundException, SQLException, JSONException{
-		
-//		System.out.println("in sign up"+UserModel.getFirstname());
-		
-		/*if(!(UserModel.getPassword().equals(UserModel.getConfirmedPassword())))
-		{
-			return Response.status(400).entity("Mismatching Password").build();
-		}*/
+
 		LibraryDAO dao = new LibraryDAO();
 //		JSONObject jo = new JSONObject(UserModel);
 		int userId = dao.signUp(UserModel);
+		
 		//return Response.status(200).entity("Sign Up Success").build();
-		
 		return Response.status(200).entity(userId).build();
-		
-		//return Response.status(200).entity(userId).build();
-		
 //		return (HashMap) new HashMap().put("response", "okays");
 	}
 	
+	
+	
+	@GET
+	@Path("/myProfile/{userId}")  //For PathParam
+	//@Path("/myProfile")  // For QueryParam
+	//@PathParam("userId") //can be used here instead of public Response myProfile(@PathParam("userId") String userId) 
+	//But need to analyse.Sign up call come into this method if this is used.
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.TEXT_HTML)
+	public Response myProfile(@PathParam("userId") String userId) throws SQLException{
+	//public Response myProfile(@QueryParam("userId") String userId) throws SQLException{
+
+		LibraryDAO dao = new LibraryDAO();
+		LoginUserModel userObj = dao.fetchMyProfile(userId);		
+		return Response.status(200).entity(userObj).build();
+	}
+	
+
 //	@GET
 //	@Path("/myCart")
 //	public Response myCart(String personId) throws ClassNotFoundException, SQLException, JSONException{

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h3>My Profile</h3>
+<form name="myForm" ng-submit="editProfile()">
+<p>First Name : <input type="text" ng-model="user.firstname" required></input></p>
+<p>Last Name : <input type="text" ng-model="user.lastname" ></input></p>
+<p>Username : <input type="text" ng-model="user.username"></input></p>
+<p>Email Id : <input type="text" ng-model="user.email" required></input></p>
+<p>Interests : <input type="text" ng-model="user.interests"></input></p>
+<p>Phone Number : <input type="text" ng-model="user.phonenumber"></input></p>
+<input type="submit" value="Edit Profile">
+</form>
+</body>
+</html>

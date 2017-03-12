@@ -1,4 +1,18 @@
 var app = angular.module('libApp',['ngRoute']);
+
+//app.factory('SharedProperties', ['$scope', function($scope){
+app.service('SharedProperties', function(){
+    var userId = null;
+    /*return {
+        getUserId: function () {
+            return userId;
+        },
+        setUserId: function(value) {
+        	userId = value;
+        }
+    };*/
+});
+
 app.controller('LoginController', function($scope,$http,$window,$location) {
 	$scope.loginFunc = function(){
 //	$http.get("rest/libraryService/getMsg")
@@ -32,7 +46,7 @@ app.controller('LoginController', function($scope,$http,$window,$location) {
 	}
 });
 
-app.controller('SignUpController',function($scope,$http,$window,$location){
+app.controller('SignUpController', function($scope,$http,$window,$location,$rootScope,SharedProperties){
 	$scope.phoneNumber =/^\d{1,45}$/;
 	$scope.signUp = function(){
 	if($scope.user.password!="" && $scope.user.password!=$scope.user.confirmedPassword)
@@ -55,8 +69,12 @@ app.controller('SignUpController',function($scope,$http,$window,$location){
 //        	accept: application/json
 //        }
         //data : angular.toJson($scope.user)
-    }).then(function mySucces(response) {
+    }).then(function mySuccess(response) {
+    	SharedProperties.userId = response.data;
     	$scope.userId = response.data;
+    	$rootScope.userId = response.data;
+    	//$rootScope.userId = response.data;
+    	//SharedProperties.setUserId = response.data;
     	$location.path("/library");
     }, function myError(response) {
         $scope.msg = response.statusText;
@@ -65,7 +83,8 @@ app.controller('SignUpController',function($scope,$http,$window,$location){
 	}
 });
 
-app.controller('SearchController',function($scope,$http,$window,$location){
+app.controller('SearchController',function($scope,$http,$window,$location,SharedProperties){
+	$scope.userId = SharedProperties.userId;
 	$scope.searchFunc = function(){
 	$http({
         method : "POST",
@@ -94,12 +113,16 @@ app.controller('SearchController',function($scope,$http,$window,$location){
 	};
 });
 
-app.controller('ProfileController',function($scope,$http,$window,$location){
+app.controller('ProfileController',function($scope,$http,$window,$location,SharedProperties){
+	$scope.userId = SharedProperties.userId;
 	$http({
-        method : "POST",
-        url : "library_books.json",
-    }).then(function mySucces(response) {
-    	$scope.books=response.data;
+        method : "GET",
+        //url : "rest/libraryService/myProfile", //For QueryParam
+        url : "rest/libraryService/myProfile/"+ $scope.userId //PathParam
+        //data : {userId: $scope.userId}
+        //params : {"userId" : $scope.userId} // QueryParams
+    }).then(function mySuccess(response) {
+    	$scope.user=response.data;
     }, function myError(response) {
         $scope.msg = response.statusText;
     });
@@ -150,6 +173,7 @@ app.controller('CartController',function($scope,$http,$window,$location){
 	
 	
 });
+
 
 //Home Page Module
 //angular.module('homeApp', []).config(['$routeProvider',

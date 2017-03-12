@@ -189,18 +189,25 @@ public class LibraryDAO {
 		return id;
 	}
 			  
-			  
-			  
-			  
-			  
-			  
-			  
-			  
-			  
-			  
-			  
-			  
-			  
+	public LoginUserModel fetchMyProfile(String userId) throws SQLException
+	{
+		LoginUserModel userObj = new LoginUserModel();
+		stmt = conn.createStatement();
+		rs = stmt.executeQuery("SELECT * FROM LIBAPP_USER_DETAILS WHERE id = " +userId);
+		while (rs.next())
+		{
+			userObj.setId(rs.getLong("id"));
+			userObj.setFirstname(rs.getString("firstname"));
+			userObj.setLastname(rs.getString("lastname"));
+			userObj.setUsername(rs.getString("username"));
+			userObj.setEmail(rs.getString("email"));
+			userObj.setInterests(rs.getString("interests"));
+			userObj.setPhonenumber(rs.getString("phonenumber"));
+		}
+		return userObj;
+		
+	}
+			  		  
 	public boolean getMyCart(String UserModel) throws SQLException, ClassNotFoundException, JSONException
 	{	
 		boolean bool=false;
