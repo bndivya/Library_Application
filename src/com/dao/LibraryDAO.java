@@ -8,10 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.model.LibraryBooks;
 import com.model.LoginUserModel;
 
 public class LibraryDAO {
@@ -39,18 +42,20 @@ public class LibraryDAO {
 		}
 	    
 	}
-	public boolean validateLogin(String username,String password) throws SQLException, ClassNotFoundException
+	public int validateLogin(String username,String password) throws SQLException, ClassNotFoundException
 	{	
-		boolean bool=false;
+		//boolean bool=false;
+		int userId = 0;
 		try{
 		     	//stmt = conn.createStatement();
-			  ps = conn.prepareStatement("SELECT username, password FROM LIBAPP_USER_DETAILS where username = ? and password = ? and isactive = ?");
+			  ps = conn.prepareStatement("SELECT id, username, password FROM LIBAPP_USER_DETAILS where username = ? and password = ? and isactive = ?");
 			  ps.setString(1, username);
 			  ps.setString(2, password);
 			  ps.setString(3, "Y");
 		      rs = ps.executeQuery();
 		      if(rs.next())
-		    	  bool = true;
+		    	  userId = rs.getInt("id");
+		    	 // bool = true;
 		}
 		catch(SQLException se)
 		{
@@ -63,7 +68,8 @@ public class LibraryDAO {
 			 ps.close();
 		     conn.close();
 		}
-		return bool;
+		//return bool;
+		return userId;
 	}
 
 	/*public boolean signUp(LoginUserModel UserModel) throws SQLException, ClassNotFoundException, JSONException
@@ -207,7 +213,73 @@ public class LibraryDAO {
 		return userObj;
 		
 	}
-			  		  
+	
+	public List<LibraryBooks> searchBooks(LibraryBooks libBook) throws SQLException
+	{
+		List<LibraryBooks> lbArr = new ArrayList<LibraryBooks>();
+		try{
+			  ps = conn.prepareStatement("SELECT * FROM LIBRARY_BOOKS");
+		      rs = ps.executeQuery();
+		      while(rs.next())
+		      {
+		    	  LibraryBooks lb = new LibraryBooks();
+		    	  lb.setAuthor(rs.getString("author"));
+			      lb.setAvailableunits(rs.getString("availableunits"));
+			      lb.setEdition(rs.getString("edition"));
+			      lb.setId(rs.getInt("id"));
+			      lb.setPublisher(rs.getString("publisher"));
+			      lb.setTitle(rs.getString("title"));
+			      lbArr.add(lb);
+		      }
+		}
+		catch(SQLException se)
+		{
+			se.printStackTrace();
+		}
+		/*finally
+		{
+			 rs.close();
+			 ps.close();
+		     conn.close();
+		}*/
+		return lbArr;
+	}
+	
+	
+	public String placeOrder(int userId, List cart) throws SQLException, ClassNotFoundException, JSONException
+	{	
+		int count =0;
+		String msg = "";
+		String sql = "BEGIN Insert into LIBAPP_ORDERS (userid, bookid) VALUES (?,?)";
+		try{
+			for(int i=0; i<cart.size(); i++)
+			{
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, userId);
+				ps.setInt(2, (int)cart.get(i));
+				count = ps.executeUpdate();
+				if(count == 0)
+					break;
+			}
+			if(count==0)
+				msg="Something went wrong while placing order";
+			else
+				msg = "Order placed successfully";
+		}
+		catch(SQLException se)
+		{
+			se.printStackTrace();
+		}
+		finally
+		{
+			/* rs.close();
+		     ps.close();
+		     conn.close();*/
+		}
+		return msg;
+	}
+	
+	
 	public boolean getMyCart(String UserModel) throws SQLException, ClassNotFoundException, JSONException
 	{	
 		boolean bool=false;

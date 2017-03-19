@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<h3>My Cart</h3>
+<body>
+<table>
+<tr>
+<th>Book</th>
+<th>Author</th>
+<th>Edition</th>
+<th>Publisher</th>
+<th>Quantity</th>
+</tr>
+<tr ng-repeat = "book in cart">
+<td>{{book.title}}</td>
+<td>{{book.author}}</td>
+<td>{{book.edition}}</td>
+<td>{{book.publisher}}</td>
+<td>1</td>
+</tr>
+<td><button ng-click="placeOrder()">Place Order</button></td>
+<h3>{{msg}}</h3>
+</table>
+</body>
+</html>

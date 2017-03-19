@@ -3,6 +3,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -18,6 +19,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.dao.LibraryDAO;
+import com.model.CartRequest;
+import com.model.LibraryBooks;
 import com.model.LoginUserModel;
 
 @Path("/libraryService")
@@ -41,13 +44,17 @@ public class LibraryService {
 		JSONObject jsonObj = new JSONObject(loginUserModel);
 		
 		LibraryDAO dao = new LibraryDAO();
-		boolean flag = dao.validateLogin((String)jsonObj.get("username"), (String)jsonObj.get("password"));
+		int userId = dao.validateLogin((String)jsonObj.get("username"), (String)jsonObj.get("password"));
 		String msg = "";
-		if(flag==true)
+		/*if(flag==true)
 			msg="Valid credentials";
 		else
-			msg="Invalid credentials";
-		return Response.status(200).entity(msg).build();
+			msg="Invalid credentials";*/
+/*		if(userId!=0)
+			msg="Valid credentials";
+		else
+			msg="Invalid credentials";*/
+		return Response.status(200).entity(userId).build();
 	}
 	
 	
@@ -83,7 +90,29 @@ public class LibraryService {
 		return Response.status(200).entity(userObj).build();
 	}
 	
+	@POST //POST or GET??
+	@Path("/search")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response searchBooks(LibraryBooks libBooks) throws ClassNotFoundException, SQLException, JSONException{
 
+		LibraryDAO dao = new LibraryDAO();
+		List<LibraryBooks> libBks = dao.searchBooks(libBooks);
+		return Response.status(200).entity(libBks).build();
+	}
+	
+	@POST
+//	@Path("/placeOrder/{userId}/{cart}")
+	@Path("/placeOrder")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response placeOrder(@PathParam("userId") int userId, @PathParam("cart") List cart) throws ClassNotFoundException, SQLException, JSONException{
+	public Response placeOrder(CartRequest cartRequest) throws ClassNotFoundException, SQLException, JSONException{
+		LibraryDAO dao = new LibraryDAO();
+		String msg = dao.placeOrder(cartRequest.getUserId(), cartRequest.getCart().getBooks());
+		return Response.status(200).entity(msg).build();
+	}
+	
 //	@GET
 //	@Path("/myCart")
 //	public Response myCart(String personId) throws ClassNotFoundException, SQLException, JSONException{

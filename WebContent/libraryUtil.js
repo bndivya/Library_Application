@@ -11,9 +11,10 @@ app.service('SharedProperties', function(){
         	userId = value;
         }
     };*/
+    var cart = [];
 });
 
-app.controller('LoginController', function($scope,$http,$window,$location) {
+app.controller('LoginController', function($scope,$http,$window,$location,SharedProperties) {
 	$scope.loginFunc = function(){
 //	$http.get("rest/libraryService/getMsg")
 //    .then(function(response) {
@@ -34,7 +35,9 @@ app.controller('LoginController', function($scope,$http,$window,$location) {
 			dataType: "json",
 			//accept: application/json
 	    }).then(function mySucces(response) {
-	        $scope.msg = response.data;
+	    	SharedProperties.userId = response.data;
+	    	if(response.data!=0)
+	        $scope.msg = "Valid credentials";
 	        if($scope.msg == "Valid credentials")
 	        $location.path("/library");
 	        else
@@ -88,7 +91,8 @@ app.controller('SearchController',function($scope,$http,$window,$location,Shared
 	$scope.searchFunc = function(){
 	$http({
         method : "POST",
-        url : "library_books.json",
+        //url : "library_books.json",
+        url : "rest/libraryService/search",
     }).then(function mySucces(response) {
     	$scope.books=response.data;
     }, function myError(response) {
@@ -101,16 +105,18 @@ app.controller('SearchController',function($scope,$http,$window,$location,Shared
 	$scope.addToCart = function (book) {
 		var found = false;
 		$scope.cart.forEach(function (item) {
-			if (item.title === book.title) {
-				item.quantity++;
-				$scope.cart.length++;
+			if (item.id === book.id) {
+				//item.quantity++;
+				//$scope.cart.length++;
 				found = true;
 			}
 		});
 		if (!found) {
 			$scope.cart.push(angular.extend({quantity: 1}, book));
+			book.availableunits--;
 		}
 	};
+	SharedProperties.cart = $scope.cart;
 });
 
 app.controller('ProfileController',function($scope,$http,$window,$location,SharedProperties){
@@ -160,18 +166,23 @@ app.config(['$routeProvider','$locationProvider',
 //    $locationProvider.html5Mode(true); //Remove the '#' from URL.
 }]);
 
-app.controller('CartController',function($scope,$http,$window,$location){
-	$http({
-        method : "GET",
-        url : "rest/libraryService/myCart"
-    }).then(function mySucces(response) {
-    	$location.path("/myCart");
-    }, function myError(response) {
-        $scope.msg = response.statusText;
-    });
-	
-	
-	
+app.controller('CartController',function($scope,$http,$window,$location,SharedProperties){
+	$scope.cart = SharedProperties.cart;
+	$scope.userId = SharedProperties.userId;
+	$scope.placeOrder = function()
+	{
+		//$scope.msg = "Order placed Successfully. Thank you!";
+		$http({
+	        method : "POST",
+	        //url : "rest/libraryService/placeOrder/:userId/:cart",
+	        url : "rest/libraryService/placeOrder",
+	        data : {userId: $scope.userId, cart:$scope.cart}
+	    }).then(function mySuccess(response) {
+	    	$scope.msg=response.data;
+	    }, function myError(response) {
+	        $scope.msg = response.statusText;
+	    });
+	}
 });
 
 
