@@ -250,13 +250,13 @@ public class LibraryDAO {
 	{	
 		int count =0;
 		String msg = "";
-		String sql = "BEGIN Insert into LIBAPP_ORDERS (userid, bookid) VALUES (?,?)";
+		String sql = "Insert into LIBAPP_ORDERS (userid, bookid) VALUES (?,?)";
 		try{
 			for(int i=0; i<cart.size(); i++)
 			{
 				ps = conn.prepareStatement(sql);
 				ps.setInt(1, userId);
-				ps.setInt(2, (int)cart.get(i));
+				ps.setInt(2, ((LibraryBooks)cart.get(i)).getId());
 				count = ps.executeUpdate();
 				if(count == 0)
 					break;

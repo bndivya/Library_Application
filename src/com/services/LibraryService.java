@@ -109,7 +109,8 @@ public class LibraryService {
 //	public Response placeOrder(@PathParam("userId") int userId, @PathParam("cart") List cart) throws ClassNotFoundException, SQLException, JSONException{
 	public Response placeOrder(CartRequest cartRequest) throws ClassNotFoundException, SQLException, JSONException{
 		LibraryDAO dao = new LibraryDAO();
-		String msg = dao.placeOrder(cartRequest.getUserId(), cartRequest.getCart().getBooks());
+		//String msg = dao.placeOrder(cartRequest.getUserId(), cartRequest.getCart().getBooks());
+		String msg = dao.placeOrder(cartRequest.getUserId(), cartRequest.getCart());
 		return Response.status(200).entity(msg).build();
 	}
 	

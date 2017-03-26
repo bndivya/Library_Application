@@ -34,6 +34,10 @@ create table Library_books(
    availableunits varchar2(5)
 );
 
+create table LIBAPP_ORDERS(
+   userid number(20) not null,
+   bookid number(20)
+);
 
 
 column S new_val inc; 

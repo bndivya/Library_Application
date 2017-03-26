@@ -112,7 +112,8 @@ app.controller('SearchController',function($scope,$http,$window,$location,Shared
 			}
 		});
 		if (!found) {
-			$scope.cart.push(angular.extend({quantity: 1}, book));
+			//$scope.cart.push(angular.extend({quantity: 1}, book));
+			$scope.cart.push(book);
 			book.availableunits--;
 		}
 	};
@@ -174,9 +175,14 @@ app.controller('CartController',function($scope,$http,$window,$location,SharedPr
 		//$scope.msg = "Order placed Successfully. Thank you!";
 		$http({
 	        method : "POST",
+	        dataType: 'json',
 	        //url : "rest/libraryService/placeOrder/:userId/:cart",
 	        url : "rest/libraryService/placeOrder",
-	        data : {userId: $scope.userId, cart:$scope.cart}
+	        //data : {userId: $scope.userId, cart: angular.toJson($scope.cart)},
+	        data : {userId: $scope.userId, cart: $scope.cart},
+	        headers: {
+	            "Content-Type": "application/json",
+	        } 
 	    }).then(function mySuccess(response) {
 	    	$scope.msg=response.data;
 	    }, function myError(response) {
